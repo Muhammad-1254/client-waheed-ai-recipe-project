@@ -21,10 +21,10 @@ const userSchema = new mongoose.Schema(
     refreshToken: {
       type: String,
     },
-    recipes: [
+    conversation: [
       {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "Recipe",
+        ref: "Conversation",
       },
     ]
   },

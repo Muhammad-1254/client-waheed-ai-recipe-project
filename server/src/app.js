@@ -8,7 +8,8 @@ import cookieParser from 'cookie-parser';
 
 // routes import 
 import userRouter from './routes/user.route.js'
-import recipeRouter from './routes/recipe.route.js'
+import gptRouter from './routes/gpt.route.js'
+import { toolFunctions } from './utils/gpt.js';
 
 
 const app = express();
@@ -25,8 +26,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser())
 
 app.use(`/api/v1/users`, userRouter);
-app.use('/api/v1/recipes', recipeRouter);
-
+app.use('/api/v1/gpt', gptRouter);
 
 
 // health checker
@@ -36,6 +36,7 @@ app.get('/api/v1/health', (req, res) => {
 app.get('/api/v1/temp', (req, res) => {
   res.send('temp');
 });
+
 
 
 

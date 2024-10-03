@@ -15,6 +15,7 @@ export const verifyJWT = asyncHandler(async (req, res, next) => {
             throw new ApiError(401, "Unauthorized request - Token not found");
         }
 
+
         let decodedToken;
         try {
             decodedToken = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
@@ -36,7 +37,7 @@ export const verifyJWT = asyncHandler(async (req, res, next) => {
 
                 // Find user with decoded refresh token
                 const user = await User.findById(decodedRefreshToken._id).select("-password -recipes");
-               
+               console.log("user from auth: ",user)
                 if (!user || user.refreshToken !== refreshToken) {
                     throw new ApiError(401, "Invalid refresh token or user not found");
                 }
@@ -45,7 +46,10 @@ export const verifyJWT = asyncHandler(async (req, res, next) => {
                 const { accessToken, refreshToken:newRefreshToken } =await generateAccessAndRefreshTokens(user._id);
 
                 // Send new access and refresh tokens
-                const options = { httpOnly: true, secure: true };
+                const options = {
+                    httpOnly: false,
+                    secure: process.env.NODE_ENV === "production"
+                }
                 res.cookie('accessToken', accessToken, options);
                 res.cookie('refreshToken', newRefreshToken, options);
 
@@ -56,6 +60,7 @@ export const verifyJWT = asyncHandler(async (req, res, next) => {
                 throw new ApiError(401, "Invalid access token");
             }
         }
+
 
         // If token is valid, find user and proceed
         const user = await User.findById(decodedToken?._id).select("-password -refreshToken -recipes");

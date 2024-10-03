@@ -92,8 +92,8 @@ export const loginUser =asyncHandler(async(req,res)=>{
    const loggedInUser = await User.findById(user._id).select("-password -recipes")
    console.log("loggedInUser: ",loggedInUser)
    const options = {
-    httpOnly: true,
-    secure: true
+    httpOnly: false,
+    secure: process.env.NODE_ENV === "production"
 }
     res
     .cookie("accessToken", accessToken, options)
@@ -127,8 +127,8 @@ export const logoutUser = asyncHandler(async(req, res) => {
     )
 
     const options = {
-        httpOnly: true,
-        secure: true
+        httpOnly: false,
+        secure: process.env.NODE_ENV === "production"
     }
 
     return res
@@ -166,8 +166,8 @@ export  const refreshAccessToken = asyncHandler(async (req, res) => {
         }
     
         const options = {
-            httpOnly: true,
-            secure: true
+            httpOnly: false,
+            secure: process.env.NODE_ENV === "production"
         }
     
         const {accessToken, newRefreshToken} = await generateAccessAndRefereshTokens(user._id)
