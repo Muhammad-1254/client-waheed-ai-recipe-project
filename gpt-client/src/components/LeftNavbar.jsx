@@ -17,21 +17,19 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   chatScreenInitialState,
   setChatScreenData,
-  setMessages,
 } from "../store/slices/ChatScreenSlice";
 import { timeFromNow } from "../lib/utils";
 import { Card } from "./ui/card";
-import { useSearchParams } from "react-router-dom";
 import {
   setChatListData,
   setChatListLoading,
-  setHasMore,
 } from "../store/slices/chatListSlice";
 import { ScrollArea } from "./ui/scroll-area";
 import { Skeleton } from "./ui/skeleton";
 import _ from "lodash";
+import { toast } from "../hooks/use-toast";
 export function LeftNavbarComponent() {
-  const [isOpen, setIsOpen] = useState(true);
+  const [isOpen, setIsOpen] = useState(false);
   const { chatList, loading, hasMore, page } = useSelector(
     (state) => state.chatList
   );
@@ -87,6 +85,7 @@ export function LeftNavbarComponent() {
   }, []); 
   const newChatHandler = () => {
     dispatch(setChatScreenData(chatScreenInitialState));
+    setIsOpen(false);
   };
 
   const onChatSelect = (chatId) => {
@@ -103,16 +102,21 @@ export function LeftNavbarComponent() {
           createdAt: chat.createdAt,
         })
       );
+      setIsOpen(false);
+    return
     }
+    toast({title: "Chat not found", variant: "destructive"});
+    
   };
   return (
     <>
       <ToggleNavBtn isOpen={isOpen} toggleNavbar={toggleNavbar} />
       <div
-        className={`
+        className={` 
        h-screen  flex flex-col  items-start 
       transition-all duration-300 ease-in-out
-      bg-background
+      bg-background z-40
+      border-r 
       relative overflow-hidden
       
       ${isOpen ? "w-72 md:w-64  translate-x-0" : "w-0 md:-translate-x-full"}
@@ -199,7 +203,6 @@ const SearchInput = () => {
 };
 
 const ChatList = ({ onChatSelect }) => {
-  const dispatch = useDispatch();
 
   const {
     chatList,

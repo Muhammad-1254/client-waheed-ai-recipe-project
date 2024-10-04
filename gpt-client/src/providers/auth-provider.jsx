@@ -23,13 +23,13 @@ const dispatch = useDispatch();
            dispatch(setIsAuth(true))
           }else{
             dispatch(setUser({ isLoading: false,  }));
-           dispatch(setIsAuth(true))
+           dispatch(setIsAuth(false))
           }
           console.log("user from user provider: ", user);
         } catch (error) {
           console.error("error getting auth user", error);
           dispatch(setUser({ isLoading: false,  }));
-          dispatch(setIsAuth(true))
+          dispatch(setIsAuth(false))
 
         } 
       }

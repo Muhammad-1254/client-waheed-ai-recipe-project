@@ -1,5 +1,4 @@
 import { useState } from "react";
-// import { useDispatch } from 'react-redux';
 import { Send } from "lucide-react";
 import { Textarea } from "./ui/textarea";
 import { Button } from "./ui/button";
@@ -114,7 +113,8 @@ export function UserInput() {
   };
 
   return (
-    <div className="fixed bottom-0  w-full  md:max-w-[400px] lg:max-w-[600px]    pb-4 pt-1 ">
+    <div className="fixed bottom-0 z-10   w-full max-w-[400px] lg:max-w-[600px] 
+    pb-3 pt-1 px-3 md:px-0 ">
       <div className="relative w-full ">
         <Textarea
           placeholder="Type Your Message Here!"

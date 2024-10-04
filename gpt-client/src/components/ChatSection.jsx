@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import  { useRef } from "react";
 import { useSelector } from "react-redux";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
@@ -30,7 +30,7 @@ const ChatSection = () => {
 
   return (
     <>
-      <div className="w-full  flex flex-col items-center      mt-20 pb-20">
+      <div className="w-full    mt-20 pb-20">
         <div
           className={`w-full   items-center justify-center   
           ${chatId ? "hidden" : "flex"}
@@ -46,7 +46,6 @@ const ChatSection = () => {
         <NewChatCarousel />
         <Chats />
       </div>
-      <UserInput />
     </>
   );
 };
@@ -56,7 +55,7 @@ export default ChatSection;
 const Chats = () => {
   const { messages, messageLoading } = useSelector((state) => state.chatScreen);
   return (
-    <div className="w-full space-y-5 my-4  ">
+    <div className="relative flex flex-col items-center w-full space-y-5 my-4  ">
       {messages.map((message, _) => {
         if (message.content&&( message?.role === "user" || message?.role === "assistant")) {
           let content = message.content;
@@ -68,11 +67,11 @@ const Chats = () => {
           return (
             <div
               key={_}
-              className={`flex  items-start  justify-center gap-x-2
+              className={`flex w-full  items-start   gap-x-2
             ${
               message.role === "user"
-                ? "flex-row-reverse md:justify-end"
-                : "md:justify-start"
+                ? "flex-row-reverse "
+                : ""
             }`}
             >
               <Badge className="w-8 md:w-12 lg:w-14  aspect-square   rounded-full mt-2 p-1.5 flex items-center justify-center">
@@ -98,6 +97,7 @@ const Chats = () => {
         }
       })}
       {messageLoading && <MessageLoadingSkeleton />}
+      <UserInput />
     </div>
   );
 };
@@ -150,11 +150,8 @@ const NewChatCarousel = () => {
   const plugin = useRef(Autoplay({ delay: 2000, stopOnInteraction: true }));
   const chatId = useSelector((state) => state.chatScreen.chatId);
   return (
-    <div
-      // className={`${
-      //   chatId ? "-translate-y-[1000%]" : "translate-y-0 "
-      // } transition-all ease-in-out duration-300 `}
-      className={`${chatId ? "hidden" : "block"} `}
+    <div 
+      className={`${chatId ? "hidden" : "block"} w-fit mx-auto `}
     >
       <Carousel
         plugins={[plugin.current]}

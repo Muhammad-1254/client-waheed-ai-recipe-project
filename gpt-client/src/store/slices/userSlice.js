@@ -20,10 +20,11 @@ const chatSlice = createSlice({
         }
       },
       setIsAuth: (state, action) => {
-        state.isAuth = action.payload;
-        if(action.payload){
+        if(action.payload===true){
+          state.isAuth = true;
           localStorage.setItem("isAuth", 'true');
         }else{
+          state.isAuth = false;
           localStorage.removeItem("isAuth");
         }
       }
