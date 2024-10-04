@@ -9,17 +9,17 @@ import cookieParser from 'cookie-parser';
 // routes import 
 import userRouter from './routes/user.route.js'
 import gptRouter from './routes/gpt.route.js'
-import { toolFunctions } from './utils/gpt.js';
 
 
 const app = express();
 
 app.use(cors({
-  origin: [process.env.CORS_ORIGIN,process.env.CORS_ORIGIN_PREVIEW],
+  origin: [process.env.CORS_ORIGIN,process.env.CORS_ORIGIN_PREVIEW, process.env.CORS_PROD,"https://cool-crisp-a31197.netlify.app"
+  ],
   credentials: true
 }));
 
-// app.use(cors());
+app.use(cors("*"));
 
 app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: true }));

@@ -6,19 +6,25 @@ export const apiRoutes = {
     signup:`${prefix}/users/register`,
     login:`${prefix}/users/login`,
     logout:`${prefix}/users/logout`,
-    createRecipe:`${prefix}/recipes/createRecipe`,
+    refreshToken:`${prefix}/users/refresh-token`,
+    changePassword:`${prefix}/users/change-password`,
+
+    createNewConversation:`${prefix}/gpt/createNewConversation`,
+    addConversationMessage:`${prefix}/gpt/addConversationMessage`,
 
     
 
     // get
-    getAccessToken:`${prefix}/users/getAccessToken`,
     getUser:`${prefix}/users/current-user`,
-    getAllRecipes:`${prefix}/recipes/getAllRecipes`,
+    getAllConversations:`${prefix}/gpt/getAllConversations`,
+    getConversation:`${prefix}/gpt/getConversation`,
+    searchConversations:`${prefix}/gpt/searchConversations`,
+    
 
-    //patch 
-    updateRecipeFavorite:`${prefix}/recipes/updateRecipe/favorite`,
-
+    // patch 
+    saveConversation:`${prefix}/gpt/saveConversation`,
+    
     //delete
-    deleteRecipe:`${prefix}/recipes/deleteRecipe`,
+    deleteConversation:`${prefix}/gpt/deleteConversation`,
     
 }

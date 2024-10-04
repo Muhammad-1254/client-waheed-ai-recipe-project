@@ -26,7 +26,7 @@ const HistoryPage = () => {
       try {
         setLoading(true);
         const res = await axios.get(
-          `${apiRoutes.getAllRecipes}?skip=${page.skip}&limit=${page.limit}`,
+          `${apiRoutes.getAllConversations}?skip=${page.skip}&limit=${page.limit}`,
           { withCredentials: true }
         );
         setData((prev)=>([...prev, ...res.data.data]));
@@ -55,9 +55,9 @@ const HistoryPage = () => {
 
   const handleFavorite = useCallback(async(recipeId,isFavorite)=>{
     try {
-      const res = await axios.patch(apiRoutes.updateRecipeFavorite,{
-        recipeId,
-        isFavorite
+      const res = await axios.patch(apiRoutes.saveConversation,{
+        conversationId:recipeId,
+        isSaved:isFavorite
       },{withCredentials:true})
       // now update the data
       if(res.status===200){
@@ -77,7 +77,7 @@ const HistoryPage = () => {
 },[])
   const handleDelete =useCallback(async(recipeId)=>{
     try {
-      const res = await axios.delete(`${apiRoutes.deleteRecipe}/${recipeId}`,{withCredentials:true},)
+      const res = await axios.delete(`${apiRoutes.deleteConversation}/${recipeId}`,{withCredentials:true},)
       // now update the data
       if(res.status===200){
         const updatedData = data.filter(item=>item._id!==recipeId)

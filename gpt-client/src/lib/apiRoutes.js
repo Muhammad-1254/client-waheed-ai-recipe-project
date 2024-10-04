@@ -1,7 +1,9 @@
 
-const prefix = 'http://localhost:8000/api/v1';
-export const apiRoutes = {
+// const prefix = 'http://localhost:8000/api/v1';
+const prefix = 'https://waheed-ai-recipe-app-server.vercel.app/api/v1';
 
+
+export const apiRoutes = {
     // post
     signup:`${prefix}/users/register`,
     login:`${prefix}/users/login`,

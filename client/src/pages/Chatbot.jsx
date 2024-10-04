@@ -31,11 +31,12 @@ function Chatbot() {
     e.preventDefault();
     setLoading(true);
     try {
-      const res = await axios.post(apiRoutes.createRecipe,{
+      const res = await axios.post(apiRoutes.createNewConversation,{
         ingredients:formData.ingredients,
         mealType:formData.mealType,
         cuisine:formData.cuisine,
         complexity:formData.complexity,
+        prompt:""
       },{withCredentials:true});
       console.log("res: ",res.data)
       setData(()=>({...res.data.data}))
@@ -57,9 +58,11 @@ function Chatbot() {
 
   const handleFavorite = async() => {
     try {
-      const res = await axios.patch(apiRoutes.updateRecipeFavorite,{
-        recipeId:data._id,
-        isFavorite:!data.isFavorite
+      const res = await axios.patch(apiRoutes.saveConversation,{
+        // recipeId:data._id,
+        // isFavorite:!data.isFavorite
+        saveConversationId:data._id,
+        isSaved:!data.isFavorite
       },{withCredentials:true})
       console.log("res from favorite: ",res.data)
       setData((prev)=>({...prev,isFavorite:!prev.isFavorite}))

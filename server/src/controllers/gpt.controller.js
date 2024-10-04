@@ -6,8 +6,7 @@ import {
   toolFunctions,
 } from "../utils/gpt.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
-import { Conversation, Message } from "../models/gptConversation.model.js";
-import mongoose from "mongoose";
+import { Conversation} from "../models/gptConversation.model.js";
 
 const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
