@@ -1,6 +1,11 @@
 
-// const prefix = 'http://localhost:8000/api/v1';
-const prefix = 'https://waheed-ai-recipe-app-server.vercel.app/api/v1';
+
+// eslint-disable-next-line no-undef
+// const isDevelopment = process.env.NODE_ENV === 'development';
+const isDevelopment = false;
+
+
+const prefix = isDevelopment?"http://localhost:8000/api/v1":'https://waheed-ai-recipe-app-server.vercel.app/api/v1';
 
 
 export const apiRoutes = {

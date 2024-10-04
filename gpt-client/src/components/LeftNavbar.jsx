@@ -208,9 +208,6 @@ const ChatList = ({ onChatSelect }) => {
     chatList,
     loading,
     hasMore,
-    searchChatItems,
-    searchLoading,
-    searchItemOpen,
   } = useSelector((state) => state.chatList);
   const currentDate = useRef(timeFromNow(new Date()));
   return (
@@ -242,16 +239,15 @@ const ChatList = ({ onChatSelect }) => {
         );
       })}
       {loading && <ChatListFetchingLoading />}
-      {!hasMore && (
-        <p className="px-3  w-fit ml-3 py-0.5 rounded  bg-muted">
-          No more Chats
-        </p>
-      )}
-      {!hasMore && chatList.length === 0 && (
+      {!hasMore &&chatList.length === 0? (
         <p className="px-3  w-fit ml-3 py-0.5 rounded  bg-muted">
           No chats Found
         </p>
-      )}
+      ):!hasMore && (
+        <p className="px-3  w-fit ml-3 py-0.5 rounded  bg-muted">
+          No more Chats
+        </p> )}
+   
     </ScrollArea>
   );
 };

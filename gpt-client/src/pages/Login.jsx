@@ -24,19 +24,9 @@ import { setIsAuth, setUser } from "../store/slices/userSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { Navigate, useNavigate } from "react-router-dom";
 
-const Login = () => {
-  return (
-    <div className="w-screen px-[2%] md:px-0 h-screen flex items-center justify-center">
-      <LoginTabs />
-    </div>
-  );
-};
-
-export default Login;
-
 const loginUserInitialState = {
-  email: "usman@gmail.com",
-  password: "12345678",
+  email: "",
+  password: "",
 };
 const signupUserInitialState = {
   email: "",
@@ -45,7 +35,7 @@ const signupUserInitialState = {
   confirmPassword: "",
 };
 
-export function LoginTabs() {
+const Login = () => {
   const [loginUser, setLoginUser] = useState(loginUserInitialState);
   const [signupUser, setSignupUser] = useState(signupUserInitialState);
   const [loading, setLoading] = useState(false);
@@ -64,8 +54,9 @@ export function LoginTabs() {
             userId: data.user._id,
             username: data.user.username,
             email: data.user.email,
-          }));
-        dispatch(setIsAuth(true))
+          })
+        );
+        dispatch(setIsAuth(true));
       } else {
         toast({
           title: "Invalid credentials",
@@ -106,128 +97,133 @@ export function LoginTabs() {
       const res = await axios.post(apiRoutes.signup, signupUser, {
         withCredentials: true,
       });
-      console.log("res", res.data);
-      const data = res.data;
-      if (!data.user._id) {
+      const data = res.data.data;
+      console.log("data", data);
+      if (data._id) {
+       toast({
+          title: "User created successfully",
+          description:"Please login to continue"
+       })
+      } else {
         toast({
-          title: "Invalid credentials",
+          title: "Something went wrong",
+          description: res.data?.message,
         });
-        setLoading(false);
-        return;
       }
-      if (data.statusCode === 200) {
-        dispatch(
-          setUser({
-            userId: data.user._id,
-            username: data.user.username,
-            email: data.user.email,
-          }));
-        dispatch(setIsAuth(true))
-      }
-      navigate("/");
-
       setLoading(false);
     } catch (error) {
       console.log("error while signup", error);
-      toast({
-        title: "Something went wrong",
-        description: error.response.data.message,
-      });
+      if (error.status === 409) {
+        toast({
+          title: "User with email or username already exists",
+          variant: "destructive",
+        });
+      } else {
+        toast({
+          title: "Something went wrong",
+          description: error.response.data.message,
+          variant: "destructive",
+        });
+      }
       setLoading(false);
     }
   };
 
   return (
-    <Tabs defaultValue="login" className="w-[400px]">
-      <TabsList className="grid w-full grid-cols-2">
-        <TabsTrigger value="login">Login</TabsTrigger>
-        <TabsTrigger value="signup">Signup</TabsTrigger>
-      </TabsList>
-      <TabsContent value="login">
-        <Card className="pt-4 ">
-          <CardContent className="space-y-2">
-            <div className="space-y-1">
-              <Label>Email</Label>
-              <Input
-                value={loginUser.email}
-                onChange={(e) =>
-                  setLoginUser({ ...loginUser, email: e.target.value })
-                }
-                placeholder="jondoe@gmail.com"
-              />
-            </div>
-            <div className="space-y-1">
-              <Label>Password</Label>
-              <Input
-                value={loginUser.password}
-                onChange={(e) =>
-                  setLoginUser({ ...loginUser, password: e.target.value })
-                }
-                placeholder="*****"
-              />
-            </div>
-          </CardContent>
-          <CardFooter className="flex items-center justify-center">
-            <Button disabled={loading} onClick={loginHandler}>
-              {loading ? "Loading..." : "Login"}
-            </Button>
-          </CardFooter>
-        </Card>
-      </TabsContent>
-      <TabsContent value="signup">
-        <Card className="pt-4 ">
-          <CardContent className="space-y-2">
-            <div className="space-y-1">
-              <Label>Email</Label>
-              <Input
-                value={signupUser.email}
-                onChange={(e) =>
-                  setSignupUser({ ...signupUser, email: e.target.value })
-                }
-                placeholder="jondoe@gmail.com"
-              />
-            </div>
-            <div className="space-y-1">
-              <Label>Username</Label>
-              <Input
-                value={signupUser.username}
-                onChange={(e) =>
-                  setSignupUser({ ...signupUser, username: e.target.value })
-                }
-                placeholder="jon-doe"
-              />
-            </div>
-            <div className="space-y-1">
-              <Label>Password</Label>
-              <Input
-                value={signupUser.password}
-                onChange={(e) =>
-                  setSignupUser({ ...signupUser, password: e.target.value })
-                }
-                placeholder="*****"
-              />
-            </div>
-            <div className="space-y-1">
-              <Label>Confirm Password</Label>
-              <Input
-                value={signupUser.confirmPassword}
-                onChange={(e) =>
-                  setSignupUser({
-                    ...signupUser,
-                    confirmPassword: e.target.value,
-                  })
-                }
-                placeholder="*****"
-              />
-            </div>
-          </CardContent>
-          <CardFooter className="flex items-center justify-center">
-            <Button disabled={loading} onClick={signupHandler}>
-              {loading ? "Loading..." : "Login"}
-            </Button>
-          </CardFooter>
-        </Card>
-      </TabsContent>
-    </Tabs>
+    <div className="w-screen px-[2%] md:px-0 h-screen flex items-center justify-center">
+      <Tabs defaultValue="login" className="w-[400px]">
+        <TabsList className="grid w-full grid-cols-2">
+          <TabsTrigger value="login">Login</TabsTrigger>
+          <TabsTrigger value="signup">Signup</TabsTrigger>
+        </TabsList>
+        <TabsContent value="login">
+          <Card className="pt-4 ">
+            <CardContent className="space-y-2">
+              <div className="space-y-1">
+                <Label>Email</Label>
+                <Input
+                  value={loginUser.email}
+                  onChange={(e) =>
+                    setLoginUser({ ...loginUser, email: e.target.value })
+                  }
+                  placeholder="jondoe@gmail.com"
+                />
+              </div>
+              <div className="space-y-1">
+                <Label>Password</Label>
+                <Input
+                  value={loginUser.password}
+                  onChange={(e) =>
+                    setLoginUser({ ...loginUser, password: e.target.value })
+                  }
+                  placeholder="*****"
+                />
+              </div>
+            </CardContent>
+            <CardFooter className="flex items-center justify-center">
+              <Button disabled={loading} onClick={loginHandler}>
+                {loading ? "Loading..." : "Login"}
+              </Button>
+            </CardFooter>
+          </Card>
+        </TabsContent>
+        <TabsContent value="signup">
+          <Card className="pt-4 ">
+            <CardContent className="space-y-2">
+              <div className="space-y-1">
+                <Label>Email</Label>
+                <Input
+                  value={signupUser.email}
+                  onChange={(e) =>
+                    setSignupUser({ ...signupUser, email: e.target.value })
+                  }
+                  placeholder="jondoe@gmail.com"
+                />
+              </div>
+              <div className="space-y-1">
+                <Label>Username</Label>
+                <Input
+                  value={signupUser.username}
+                  onChange={(e) =>
+                    setSignupUser({ ...signupUser, username: e.target.value })
+                  }
+                  placeholder="jon-doe"
+                />
+              </div>
+              <div className="space-y-1">
+                <Label>Password</Label>
+                <Input
+                  value={signupUser.password}
+                  onChange={(e) =>
+                    setSignupUser({ ...signupUser, password: e.target.value })
+                  }
+                  placeholder="*****"
+                />
+              </div>
+              <div className="space-y-1">
+                <Label>Confirm Password</Label>
+                <Input
+                  value={signupUser.confirmPassword}
+                  onChange={(e) =>
+                    setSignupUser({
+                      ...signupUser,
+                      confirmPassword: e.target.value,
+                    })
+                  }
+                  placeholder="*****"
+                />
+              </div>
+            </CardContent>
+            <CardFooter className="flex items-center justify-center">
+              <Button disabled={loading} onClick={signupHandler}>
+                {loading ? "Loading..." : "Signup"}
+              </Button>
+            </CardFooter>
+          </Card>
+        </TabsContent>
+      </Tabs>
+    </div>
   );
-}
+};
+
+export default Login;

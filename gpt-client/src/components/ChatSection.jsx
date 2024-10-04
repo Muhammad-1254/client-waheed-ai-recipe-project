@@ -117,6 +117,9 @@ prose-a:underline
 
 prose-img:mx-auto
 prose-img:w-full
+prose-img:border
+prose-img:shadow
+md:prose-img:shadow-lg
 md:prose-img:w-[80%]
 lg:prose-img:w-[60%]
 md:prose-img:aspect-auto
