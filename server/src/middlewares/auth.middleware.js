@@ -3,6 +3,7 @@ import { asyncHandler } from "../utils/asyncHandler.js";
 import jwt from "jsonwebtoken"
 import { User } from "../models/user.model.js";
 import { generateAccessAndRefreshTokens } from "../controllers/user.controller.js";
+import { cookiesOptions } from "../utils/index.js";
 
 
 export const verifyJWT = asyncHandler(async (req, res, next) => {
@@ -46,12 +47,8 @@ export const verifyJWT = asyncHandler(async (req, res, next) => {
                 const { accessToken, refreshToken:newRefreshToken } =await generateAccessAndRefreshTokens(user._id);
 
                 // Send new access and refresh tokens
-                const options = {
-                    httpOnly: false,
-                    secure: process.env.NODE_ENV === "production"
-                }
-                res.cookie('accessToken', accessToken, options);
-                res.cookie('refreshToken', newRefreshToken, options);
+                res.cookie('accessToken', accessToken, cookiesOptions);
+                res.cookie('refreshToken', newRefreshToken, cookiesOptions);
 
                 // Attach user to request and proceed
                 req.user = user;
