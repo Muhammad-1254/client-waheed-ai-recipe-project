@@ -23,6 +23,8 @@ import Autoplay from "embla-carousel-autoplay";
 import rehypeRaw from "rehype-raw";
 import "github-markdown-css/github-markdown.css";
 import { Skeleton } from "./ui/skeleton";
+import { Bot, User } from "lucide-react";
+import { Badge } from "./ui/badge";
 const ChatSection = () => {
   const { chatId } = useSelector((state) => state.chatScreen);
 
@@ -52,11 +54,11 @@ const ChatSection = () => {
 export default ChatSection;
 
 const Chats = () => {
-  const {messages, messageLoading} = useSelector((state) => state.chatScreen);
+  const { messages, messageLoading } = useSelector((state) => state.chatScreen);
   return (
     <div className="w-full space-y-5 my-4  ">
       {messages.map((message, _) => {
-        if (message?.role === "user" || message?.role === "assistant") {
+        if (message.content&&( message?.role === "user" || message?.role === "assistant")) {
           let content = message.content;
           try {
             content = JSON.parse(content)?.prompt;
@@ -66,11 +68,23 @@ const Chats = () => {
           return (
             <div
               key={_}
-              className={`flex  items-start  justify-center
-            ${message.role === "user" ? "md:justify-end" : "md:justify-start"}`}
+              className={`flex  items-start  justify-center gap-x-2
+            ${
+              message.role === "user"
+                ? "flex-row-reverse md:justify-end"
+                : "md:justify-start"
+            }`}
             >
+              <Badge className="w-8 md:w-12 lg:w-14  aspect-square   rounded-full mt-2 p-1.5 flex items-center justify-center">
+                {message.role === "assistant" ? (
+                  <Bot size={24} className="w-full h-full" />
+                ) : (
+                  <User size={24} className="w-full h-full" />
+                )}
+              </Badge>
+
               <Card
-                className={`flex-1 w-full max-w-full md:max-w-[90%] p-4 overflow-x-auto
+                className={`flex-1 w-full max-w-full  p-4 overflow-x-auto
               ${message.role === "user" ? "bg-accent" : "bg-card"}`}
               >
                 {message.role === "user" ? (
@@ -82,11 +96,8 @@ const Chats = () => {
             </div>
           );
         }
-      
       })}
-      {messageLoading && (
-    <MessageLoadingSkeleton/>
-      )}
+      {messageLoading && <MessageLoadingSkeleton />}
     </div>
   );
 };
@@ -122,18 +133,19 @@ prose-img:rounded-lg
   );
 };
 
-const MessageLoadingSkeleton = ()=>{
-  return(
-    <Card className="w-full md:w-[90%]  max-w-xs  md:max-w-[500px] lg:max-w-[850px] xl:max-w-[1150px] 
-    flex flex-col items-start gap-y-2   p-4 ">
+const MessageLoadingSkeleton = () => {
+  return (
+    <Card
+      className="w-full md:w-[90%]  max-w-xs  md:max-w-[500px] lg:max-w-[850px] xl:max-w-[1150px] 
+    flex flex-col items-start gap-y-2   p-4 "
+    >
       <Skeleton className="h-4 w-full" />
       <Skeleton className="h-4 w-full" />
       <Skeleton className="h-4 w-[80%]" />
       <Skeleton className="h-4 w-[70%]" />
-
-  </Card>
-  )
-}
+    </Card>
+  );
+};
 const NewChatCarousel = () => {
   const plugin = useRef(Autoplay({ delay: 2000, stopOnInteraction: true }));
   const chatId = useSelector((state) => state.chatScreen.chatId);

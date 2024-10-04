@@ -20,7 +20,7 @@ import { ToastAction } from "../components/ui/toast";
 import { toast } from "../hooks/use-toast";
 import axios from "axios";
 import { apiRoutes } from "../lib/apiRoutes";
-import { setUser } from "../store/slices/userSlice";
+import { setIsAuth, setUser } from "../store/slices/userSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { Navigate, useNavigate } from "react-router-dom";
 
@@ -64,9 +64,8 @@ export function LoginTabs() {
             userId: data.user._id,
             username: data.user.username,
             email: data.user.email,
-            isAuth: true,
-          })
-        );
+          }));
+        dispatch(setIsAuth(true))
       } else {
         toast({
           title: "Invalid credentials",
@@ -122,9 +121,8 @@ export function LoginTabs() {
             userId: data.user._id,
             username: data.user.username,
             email: data.user.email,
-            isAuth: true,
-          })
-        );
+          }));
+        dispatch(setIsAuth(true))
       }
       navigate("/");
 

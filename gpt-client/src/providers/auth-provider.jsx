@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
-import { setUser } from "../store/slices/userSlice";
+import { setIsAuth, setUser } from "../store/slices/userSlice";
 import axios from "axios";
 import { apiRoutes } from "../lib/apiRoutes";
 import { useEffect } from "react";
@@ -12,22 +12,25 @@ const dispatch = useDispatch();
             dispatch(setUser({ isLoading: true }));
           const res = await axios.get(apiRoutes.getUser, { withCredentials: true });
           const data = res.data.data;
-          console.log("data from auth provider: ", data);
+          console.log(data._id)
           if (data._id) {
            dispatch(setUser({
             userId: data._id,
             username: data.username,
             email: data.email,
-            isAuth: true,
             isLoading: false,
            }))
+           dispatch(setIsAuth(true))
           }else{
-            dispatch(setUser({ isLoading: false, isAuth: false }));
+            dispatch(setUser({ isLoading: false,  }));
+           dispatch(setIsAuth(true))
           }
           console.log("user from user provider: ", user);
         } catch (error) {
           console.error("error getting auth user", error);
-          dispatch(setUser({ isLoading: false, isAuth: false }));
+          dispatch(setUser({ isLoading: false,  }));
+          dispatch(setIsAuth(true))
+
         } 
       }
       useEffect(() => {

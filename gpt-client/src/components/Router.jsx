@@ -1,13 +1,11 @@
 import { createBrowserRouter, Navigate, Outlet } from "react-router-dom";
 import Home from "../pages/Home";
 import Login from "../pages/Login";
-import { getAccessToken } from "../lib/utils";
+import { useSelector } from "react-redux";
 
-const isAuthenticated = () => {
-  return !!getAccessToken();
-};
 
-const ProtectedRoute = ({ isAuth }) => {
+const ProtectedRoute = () => {
+  const isAuth = useSelector(state=>state.user.isAuth)
   if (!isAuth) {
     return <Navigate to={"/login"} replace />;
   }
@@ -21,7 +19,7 @@ const Router = createBrowserRouter([
   },
 
   {
-    element: <ProtectedRoute isAuth={isAuthenticated()} />,
+    element: <ProtectedRoute  />,
     children: [
       {
         path: "/",

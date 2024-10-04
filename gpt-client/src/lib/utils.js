@@ -1,6 +1,5 @@
 import { clsx } from "clsx";
 import { twMerge } from "tailwind-merge"
-import Cookies from "js-cookie";
 import moment from 'moment';
 
 export function cn(...inputs) {
@@ -8,10 +7,6 @@ export function cn(...inputs) {
 }
 
 
-export const getAccessToken = () => {
-return Cookies.get("accessToken");
-
-}
 
 
 

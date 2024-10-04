@@ -266,7 +266,7 @@ const SearchResult = ({ onChatSelect }) => {
       className={`absolute left-0 top-0 z-30
     w-full flex flex-col items-start bg-popover border border-border
     transition-all duration-300 ease-in-out   
-    overflow-hidden pt-4 pb-2 
+    overflow-hidden pt-4 
     ${searchItemOpen ? "translate-x-0" : "-translate-x-full"}
      `}
     >
@@ -284,7 +284,7 @@ const SearchResult = ({ onChatSelect }) => {
         >
           {/* <MessageSquare size={20} className="mr-2" /> */}
           <p className="overflow-hidden text-ellipsis text-nowrap ">
-            {chat.messages[0].content}
+            {JSON.parse(chat.messages.find((m) => m.role == "user").content)?.prompt}
           </p>
         </Card>
       ))}
