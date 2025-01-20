@@ -6,7 +6,7 @@ import jwt from "jsonwebtoken"
 
 
 import {User} from '../models/user.model.js'
-import { cookiesOptions } from '../utils/index.js'
+import { cookiesOptions, print } from '../utils/index.js'
 
 
 export const generateAccessAndRefreshTokens = async(userId) =>{
@@ -22,7 +22,7 @@ export const generateAccessAndRefreshTokens = async(userId) =>{
 
 
     } catch (error) {
-        console.log("error: ",error)
+        print("error: ",error)
         throw new ApiError(500, "Something went wrong while generating refresh and access token")
     }
 }
@@ -33,7 +33,7 @@ export  const registerUser = asyncHandler( async (req, res) => {
 
 
     const { email, username, password } = req.body
-    console.log("register user: ",email,password,username)
+    print("register user: ",email,password,username)
     
     if (
         [email, username, password].some((field) => field?.trim() === "")
@@ -73,7 +73,7 @@ export  const registerUser = asyncHandler( async (req, res) => {
 
 export const loginUser =asyncHandler(async(req,res)=>{
     const {email, username,password} = req.body;
-    console.log("login body: ",email,username,password)
+    print("login body: ",email,username,password)
 
     if(!email && !username){
         throw new ApiError(400, "username or email is required")
@@ -91,7 +91,7 @@ export const loginUser =asyncHandler(async(req,res)=>{
     }
    const {accessToken, refreshToken} = await generateAccessAndRefreshTokens(user._id)
    const loggedInUser = await User.findById(user._id).select("-password -recipes")
-   console.log("loggedInUser: ",loggedInUser)
+   print("loggedInUser: ",loggedInUser)
  
     res
     .cookie("accessToken", accessToken, cookiesOptions)

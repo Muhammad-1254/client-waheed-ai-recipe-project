@@ -7,6 +7,7 @@ import {
 } from "../utils/gpt.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
 import { Conversation} from "../models/gptConversation.model.js";
+import { print } from "../utils/index.js";
 
 const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
@@ -29,16 +30,16 @@ const validateMessage = (messages) => {
 
 const completionModelConversation = async (messages) => {
   messages = validateMessage(messages);
-  console.log("messages: ", messages);
+  print("messages: ", messages);
   const response = await openai.chat.completions.create({
     model: completionModel,
     messages,
     tools: recipeConversationTools,
     tool_choice: "auto",
   });
-  console.log("finish_reason:", response.choices[0].finish_reason);
+  print("finish_reason:", response.choices[0].finish_reason);
   if (response.choices[0].finish_reason === "length") {
-    console.log("Error: The conversation was too long for the context window.");
+    print("Error: The conversation was too long for the context window.");
     return {
       status: 400,
       success: false,
@@ -47,7 +48,7 @@ const completionModelConversation = async (messages) => {
   }
 
   if (response.choices[0].finish_reason === "content_filter") {
-    console.log("Error: The content was filtered due to policy violations.");
+    print("Error: The content was filtered due to policy violations.");
     return {
       status: 400,
       success: false,
@@ -83,7 +84,7 @@ const completionModelConversation = async (messages) => {
     });
     return { status: 200, success: true, message: "query completed", messages };
   } else {
-    console.log("Unexpected finish_reason:", response);
+    print("Unexpected finish_reason:", response);
     return { status: 400, success: false, message: "Unexpected finish_reason" };
   }
 };

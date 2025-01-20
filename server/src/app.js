@@ -14,7 +14,7 @@ import gptRouter from './routes/gpt.route.js'
 const app = express();
 
 app.use(cors({
-  origin:[process.env.CORS_PROD, process.env.CORS_ORIGIN,process.env.CORS_ORIGIN_PREVIEW],
+  origin:[JSON.parse(process.env.ALLOWED_ORIGINS)],
   credentials: true,
   methods:'GET,HEAD,PUT,PATCH,POST,DELETE',
   allowedHeaders:'Content-Type,Authorization',

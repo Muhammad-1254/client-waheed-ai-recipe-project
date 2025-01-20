@@ -25,8 +25,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { Navigate, useNavigate } from "react-router-dom";
 
 const loginUserInitialState = {
-  email: "",
-  password: "",
+  email: "usman@gmail.com",
+  password: "12345678",
 };
 const signupUserInitialState = {
   email: "",
@@ -142,6 +142,7 @@ const Login = () => {
               <div className="space-y-1">
                 <Label>Email</Label>
                 <Input
+                type="email"
                   value={loginUser.email}
                   onChange={(e) =>
                     setLoginUser({ ...loginUser, email: e.target.value })
@@ -157,6 +158,7 @@ const Login = () => {
                     setLoginUser({ ...loginUser, password: e.target.value })
                   }
                   placeholder="*****"
+                  type="password"
                 />
               </div>
             </CardContent>
@@ -173,6 +175,7 @@ const Login = () => {
               <div className="space-y-1">
                 <Label>Email</Label>
                 <Input
+                type="email"
                   value={signupUser.email}
                   onChange={(e) =>
                     setSignupUser({ ...signupUser, email: e.target.value })
@@ -183,6 +186,7 @@ const Login = () => {
               <div className="space-y-1">
                 <Label>Username</Label>
                 <Input
+                type="text"
                   value={signupUser.username}
                   onChange={(e) =>
                     setSignupUser({ ...signupUser, username: e.target.value })
@@ -193,6 +197,7 @@ const Login = () => {
               <div className="space-y-1">
                 <Label>Password</Label>
                 <Input
+                  type="password"
                   value={signupUser.password}
                   onChange={(e) =>
                     setSignupUser({ ...signupUser, password: e.target.value })
@@ -203,6 +208,7 @@ const Login = () => {
               <div className="space-y-1">
                 <Label>Confirm Password</Label>
                 <Input
+                  type="password"
                   value={signupUser.confirmPassword}
                   onChange={(e) =>
                     setSignupUser({
