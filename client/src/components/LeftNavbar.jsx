@@ -18,7 +18,7 @@ import {
   chatScreenInitialState,
   setChatScreenData,
 } from "../store/slices/ChatScreenSlice";
-import { timeFromNow } from "../lib/utils";
+import { print, timeFromNow } from "../lib/utils";
 import { Card } from "./ui/card";
 import {
   setChatListData,
@@ -48,7 +48,7 @@ export function LeftNavbarComponent() {
         { withCredentials: true }
       );
       const data = res.data.data;
-      console.log("Fetched chats:", data);
+      print("Fetched chats:", data);
       dispatch(
         setChatListData({
           chatList: [...chatList, ...data],
@@ -167,7 +167,7 @@ const SearchInput = () => {
       dispatch(
         setChatListData({ searchChatItems: data, searchLoading: false })
       );
-      console.log("Searched chats:", data);
+      print("Searched chats:", data);
     } catch (error) {
       console.error("Error searching chats:", error);
       dispatch(setChatListData({ searchLoading: false }));

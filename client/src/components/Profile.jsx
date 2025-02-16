@@ -16,6 +16,7 @@ import axios from "axios";
 import { apiRoutes } from "../lib/apiRoutes";
 import { useNavigate } from "react-router-dom";
 import { toast } from "../hooks/use-toast";
+import { print } from "../lib/utils";
 
 const Profile = () => {
   const user = useSelector((state) => state.user);
@@ -31,7 +32,7 @@ const Profile = () => {
         navigation("/login");
       }
     } catch (error) {
-      console.log("error while logging out", error);
+      print("error while logging out", error);
       toast({
         title: "Error logging out",
         description: error.message,

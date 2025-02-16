@@ -6,7 +6,7 @@ import {
   toolFunctions,
 } from "../utils/gpt.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
-import { Conversation} from "../models/gptConversation.model.js";
+import { Conversation } from "../models/gptConversation.model.js";
 import { print } from "../utils/index.js";
 
 const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
@@ -74,7 +74,13 @@ const completionModelConversation = async (messages) => {
       }
     }
 
-    return {status:200,success:true,flag:1, message:"tool calls processed", messages};
+    return {
+      status: 200,
+      success: true,
+      flag: 1,
+      message: "tool calls processed",
+      messages,
+    };
     // Recur if there are tool calls to process
     // return await completionModelConversation([...messages]);
   } else if (response.choices[0].finish_reason === "stop") {
@@ -104,7 +110,7 @@ export const createNewConversation = asyncHandler(async (req, res) => {
   ];
 
   let response = await completionModelConversation(messages);
-  if(response.flag===1){
+  if (response.flag === 1) {
     response = await completionModelConversation(response.messages);
   }
   if (response.status === 400) {
@@ -121,7 +127,9 @@ export const createNewConversation = asyncHandler(async (req, res) => {
       complexity,
       messages: response.messages,
     });
+
     await conversation.save();
+
     return res.status(200).json({
       success: response.success,
       message: response.message,
@@ -148,7 +156,7 @@ export const addConversationMessage = asyncHandler(async (req, res) => {
   }
   conversation.messages.push({ role: "user", content: prompt });
   let response = await completionModelConversation(conversation.messages);
-  if(response.flag===1){
+  if (response.flag === 1) {
     response = await completionModelConversation(response.messages);
   }
   if (response.status === 400) {
@@ -212,11 +220,11 @@ export const searchConversations = asyncHandler(async (req, res) => {
       message: "Please provide all the required fields",
     });
   }
- const conversations = await Conversation.find({
-  userId: req.user._id,
-  'messages.role':{$in:["user",]},
-  'messages.content':{$regex:search,$options:'i'},
- }).limit(5);
+  const conversations = await Conversation.find({
+    userId: req.user._id,
+    "messages.role": { $in: ["user"] },
+    "messages.content": { $regex: search, $options: "i" },
+  }).limit(5);
   return res.status(200).json({
     success: true,
     data: conversations,

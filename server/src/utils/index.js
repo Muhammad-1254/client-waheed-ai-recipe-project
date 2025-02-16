@@ -7,6 +7,6 @@ export const cookiesOptions={
     maxAge: 1000 * 60 * 60 * 24 * 7,
 }
 
-export const print = (message)=>{
-    process.env.NODE_ENV === "development" && console.log(message);
+export const print = (...args)=>{
+    process.env.NODE_ENV === "development" && console.log(...args);
 }

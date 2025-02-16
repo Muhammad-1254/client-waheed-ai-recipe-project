@@ -7,6 +7,9 @@ export function cn(...inputs) {
 }
 
 
+export const print = (...args)=>{
+  import.meta.env.VITE_NODE_ENV === "development"&& console.log(...args);
+}
 
 
 

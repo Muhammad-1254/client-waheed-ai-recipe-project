@@ -23,6 +23,7 @@ import { apiRoutes } from "../lib/apiRoutes";
 import { setIsAuth, setUser } from "../store/slices/userSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { Navigate, useNavigate } from "react-router-dom";
+import { print } from "../lib/utils";
 
 const loginUserInitialState = {
   email: "usman@gmail.com",
@@ -68,7 +69,7 @@ const Login = () => {
       setLoading(false);
       navigate("/");
     } catch (error) {
-      console.log("error while signup", error);
+      print("error while signup", error);
       toast({
         title: "Something went wrong",
         description: error.response.data.message,
@@ -98,7 +99,7 @@ const Login = () => {
         withCredentials: true,
       });
       const data = res.data.data;
-      console.log("data", data);
+      print("data", data);
       if (data._id) {
        toast({
           title: "User created successfully",
@@ -112,7 +113,7 @@ const Login = () => {
       }
       setLoading(false);
     } catch (error) {
-      console.log("error while signup", error);
+      print("error while signup", error);
       if (error.status === 409) {
         toast({
           title: "User with email or username already exists",

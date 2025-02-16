@@ -11,6 +11,7 @@ import {
 } from "../store/slices/ChatScreenSlice";
 import { toast } from "../hooks/use-toast";
 import { setAddChatList,  } from "../store/slices/chatListSlice";
+import { print } from "../lib/utils";
 
 export function UserInput() {
   const [input, setInput] = useState("");
@@ -47,7 +48,7 @@ export function UserInput() {
           { withCredentials: true }
         );
         const data = res.data.data;
-        console.log("data", data);
+        print("data", data);
         if (data._id) {
           dispatch(
             setChatScreenData({
@@ -64,7 +65,7 @@ export function UserInput() {
           });
         }
       } catch (error) {
-        console.log("error while conversation", error);
+        print("error while conversation", error);
         dispatch(setMessageLoading(false));
       }
     } else {
@@ -84,7 +85,7 @@ export function UserInput() {
           { withCredentials: true }
         );
         const data = res.data.data;
-        console.log("data", data);
+        print("data", data);
         if (data._id) {
           dispatch(
             setChatScreenData({
@@ -104,12 +105,12 @@ export function UserInput() {
           });
         }
       } catch (error) {
-        console.log("error while create new conversation", error);
+        print("error while create new conversation", error);
         dispatch(setMessageLoading(false));
       }
 
-      setInput("");
     }
+    setInput("");
   };
 
   return (
